@@ -40,3 +40,4 @@ coverage/
 *.log
 *.lock
 *.cache
+12MegaBlog/.gitignore
