@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login as authLogin } from "../store/authSlice";
-import { Button, input, Logo } from "./index";
+import { Button, Input, Logo } from "./index";
 import { useDispatch } from "react-redux";
 import aurhService from "../../appwrite/auth";
 import { useForm } from "react-hook-form";
@@ -62,7 +62,7 @@ function Login() {
                     }
                 })}
                 />
-                <input
+                <Input
                 label="Password: "
                 placeholder="Enter your password"
                 type="password"
