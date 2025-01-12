@@ -17,14 +17,14 @@ function PostForm({post}) {
     })
 
     const navigate = useNavigate()
-    const userData = useSelector(state => state.user.userData)
+    const userData = useSelector(state => state.userData)
 
     const submit = async (data) => {
         if(post) {
             const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null
             
             if(file) {
-                appwriteService.delteFile(post.featuredimage)
+                appwriteService.delteFile(post.featuredImage)
             }
 
             const dbPost = await appwriteService.updatePost(post.$id,{
@@ -34,19 +34,23 @@ function PostForm({post}) {
 
             if(dbPost)
             {
-                navigate(`/post/${post.$id}`)
+                navigate(`/post/${dbPost.$id}`)
             }
         }  
         else {
             const file = await appwriteService.uploadFile(data.image[0]);
-
+            console.log(file);
             if(file) {
                 const fileId = file.$id
-                data.featuredImage = fileId
+                console.log(fileId);
+                console.log(userData)
                 const dbPost = await appwriteService.createPost({
                     ...data,
+                    featuredimage: fileId,
                     userId: userData.$id
                 })
+
+                console.log('post = ',dbPost);
 
                 if(dbPost) {
                     navigate(`/post/${dbPost.$id}`)
@@ -57,15 +61,16 @@ function PostForm({post}) {
     }
 
     const slugTransform = useCallback((value) => {
-        if(value && typeof value === 'string') {
+        if (value && typeof value === 'string') {
             return value
-            .trim()
-            .toLowerCase()
-            .replace(/^[a-zA-Z\d\s]+/g,'-')
-            .replace(/\s/g,'-')
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, '-') // Replace spaces with dashes
+                .replace(/[^a-z0-9-]/g, ''); // Remove invalid characters
         }
-        return ''
-    },[])
+        return '';
+    }, []);
+    
 
     useEffect(()=>{
 

@@ -8,10 +8,11 @@ function Select({
 },ref) {
 
     const id = useId();
-
+    console.log('label: ',label)
+    console.log('options: ',options)
     return (
         <div className='w-full'>
-            {label  && <label htmlFor={id} className=''></label>} 
+            {label  && <label htmlFor={id} className=''>{label}</label>} 
             <select
               {...props}
               id = {id}
@@ -20,11 +21,11 @@ function Select({
                 focus:bg-gray-50 duration-200 border border-gray-200 
                 w-full ${className}`}
             >
-                {options?.map((option) => {
+                {options?.map((option) => (
                     <option key={option} value={option}>
                         {option}
                     </option>
-                })}
+                ))}
             </select>
         </div>
     )

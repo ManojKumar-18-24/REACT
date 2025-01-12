@@ -12,7 +12,9 @@ function Home() {
                 setPosts(posts.documents)
             }
         })
+        console.log(posts.length)
     })
+    
     
     if (posts.length === 0) {
         return (
