@@ -1,7 +1,7 @@
 import React ,{useCallback,useEffect} from 'react'
 import { useForm } from 'react-hook-form'
 import {Button , Input ,Select ,RTE} from '../index'
-import appwriteService from '../../../appwrite/config'
+import service from '../../../appwrite/config'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
@@ -10,7 +10,7 @@ function PostForm({post}) {
     const {register,handleSubmit,watch,setValue,control,getValues} = useForm({
         defaultValues  : {
             title: post?.title || '',
-            slug: post?.slug || '',
+            slug: post?.$id || '',
             content: post?.content || '',
             status: post?.status || 'active',
         }
@@ -21,15 +21,15 @@ function PostForm({post}) {
 
     const submit = async (data) => {
         if(post) {
-            const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null
+            const file = data.image[0] ? service.uploadFile(data.image[0]) : null
             
             if(file) {
-                appwriteService.delteFile(post.featuredImage)
+                service.delteFile(post.featuredimage)
             }
 
-            const dbPost = await appwriteService.updatePost(post.$id,{
+            const dbPost = await service.updatePost(post.$id,{
                 ...data,
-                featuredImage : file ? file.$id : undefined
+                featuredimage : file ? file.$id : post.featuredimage 
             })
 
             if(dbPost)
@@ -38,13 +38,13 @@ function PostForm({post}) {
             }
         }  
         else {
-            const file = await appwriteService.uploadFile(data.image[0]);
+            const file = await service.uploadFile(data.image[0]);
             console.log(file);
             if(file) {
                 const fileId = file.$id
                 console.log(fileId);
                 console.log(userData)
-                const dbPost = await appwriteService.createPost({
+                const dbPost = await service.createPost({
                     ...data,
                     featuredimage: fileId,
                     userId: userData.$id
@@ -86,7 +86,7 @@ function PostForm({post}) {
             subscription.unsubscribe()
         }
     },[watch,slugTransform,setValue])
-
+    console.log(post)
     return (
         <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
             <div className="w-2/3 px-2">
@@ -118,7 +118,7 @@ function PostForm({post}) {
                 {post && (
                     <div className="w-full mb-4">
                         <img
-                            src={appwriteService.getFilePreview(post.featuredImage)}
+                            src={service.getFilePreview(post.featuredimage)}
                             alt={post.title}
                             className="rounded-lg"
                         />

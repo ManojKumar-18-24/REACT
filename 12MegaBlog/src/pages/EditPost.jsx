@@ -23,8 +23,9 @@ function EditPost() {
     
     return post ? (
         <div>
+            {console.log(post)}
             <Container>
-                <PostForm {...post}/>
+                <PostForm post = {post}/>
             </Container>
         </div>
     ):null;
