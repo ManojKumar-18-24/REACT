@@ -13,7 +13,6 @@ function Home() {
                 setPosts(posts.documents)
             }
         })
-        console.log(posts.length)
     },[userData,posts])
     
     

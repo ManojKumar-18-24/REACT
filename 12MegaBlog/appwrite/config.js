@@ -124,7 +124,6 @@ class Service {
 
   getFilePreview(fileId) 
   {
-    console.log('fileId: ',fileId)
     if(fileId.fileId)fileId = fileId.fileId
     return this.bucket.getFilePreview(
         conf.appwriteBucketId,
